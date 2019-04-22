@@ -117,11 +117,11 @@ Example: you can use specs to verify input at runtime using `defn`'s `:pre` and 
 
 Let's say requirements change and we need to add a key to a map. In a type system, we would have to change a class, or create a new class. With specs, adding a key to a map would have no effect on existing specs. We can then choose which functions interact with that new key, and add additional specs to relevant functions at our discretion. If we do nothing, the new key will still flow through functions without issue.
 
-- Specs are documentation
+### Specs are documentation
 
 Specs double as documentation readable by both humans and compilers.
 
-- Specs don't interfere with existing code
+### Specs don't interfere with existing code
 You can group specs with code, or keep them in a separate namespace. They can be toggled on or off.
 
 ## Tradeoffs
@@ -130,9 +130,7 @@ You can group specs with code, or keep them in a separate namespace. They can be
 
 Like types, specs are most useful during development for both iterating on  feedback and considering code design. The use of specs during runtime should be strategic, as validation requires extra computation. 
 
-### Specs do not enforce types. Enforcing types requires discipline and reduces
-cognitive load
-
+### Specs do not enforce types. 
 One can argue that static types enforces thought on data description, and programmers do not need to think about which data they should spec, because everything must be typed.
 
 ### Development time
