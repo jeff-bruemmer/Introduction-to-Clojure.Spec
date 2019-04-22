@@ -90,15 +90,15 @@ Notice that, like the error message from the `s/explain` example, the documentat
 
 ## Advantages of `clojure.spec`
 
-- Encourages reasoning about your code.
+### Encourages reasoning about your code.
 
 Defining expected inputs and outputs of functions beyond mere type encourages programmers to think through edge cases and program design, making code more robust.
 
-- Generate test data
+### Generate test data
 
 We can use clojure's test.check library to generate random data that fits any spec. You can also `s/excercise` specs to see randomly generated data conforming to the spec in the REPL as you refine the specification.
 
-- Optional Runtime validation
+### Optional Runtime validation
 
 Validating data during runtime can be useful for data sent over the wire and at other I/O boundaries. *WARNING* Note that there is a performance penalty for runtime validation, so only validate data at runtime when data correctness is paramount and the correctness of the data is uncertain.
 
@@ -113,7 +113,7 @@ Example: you can use specs to verify input at runtime using `defn`'s `:pre` and 
   (str n " is over 9000!"))
 ```
 
-- Flexible typing
+### Flexible typing
 
 Let's say requirements change and we need to add a key to a map. In a type system, we would have to change a class, or create a new class. With specs, adding a key to a map would have no effect on existing specs. We can then choose which functions interact with that new key, and add additional specs to relevant functions at our discretion. If we do nothing, the new key will still flow through functions without issue.
 
@@ -126,16 +126,16 @@ You can group specs with code, or keep them in a separate namespace. They can be
 
 ## Tradeoffs
 
-- Performance hit at Runtime
+### Performance hit at Runtime
 
 Like types, specs are most useful during development for both iterating on  feedback and considering code design. The use of specs during runtime should be strategic, as validation requires extra computation. 
 
-- Specs do not enforce types. Enforcing types requires discipline and reduces
+### Specs do not enforce types. Enforcing types requires discipline and reduces
 cognitive load
 
 One can argue that static types enforces thought on data description, and programmers do not need to think about which data they should spec, because everything must be typed.
 
-- Development time
+### Development time
 
 Like types, specs require more effort to code. But also like types, time spent specifying data may save time in the long run, both by encouraging programmers to reason more about the code, getting more granular feedback and error reporting, and facilitating automated testing.
 
