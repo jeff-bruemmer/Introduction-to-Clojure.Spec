@@ -1,6 +1,8 @@
 # A Brief Introduction to Clojure.Spec
 
-`clojure.spec` is a powerful library that allows programmers to:
+Clojure, a lisp built on immutable data structures, is a dynamic programming language. Some programmers prefer languages with static types. `clojure.spec` is a powerful library that adds static-type-like functionality, and overdelivers.
+
+`clojure.spec` allows programmers to:
 
 - describe data beyond type
 - document code in a way readable by both humans and machines
@@ -8,29 +10,29 @@
 - instrument code
 - destructure data
 - improve error reporting
-- generate data for testing
+- generate sample data for REPL development and testing
 
 ## Describing data
 
-The most common ways to describe data are names, types, and comments. Both names and comments communicate primarily to the programmer. Types also communicate to the programmer, but types additionally provide compilers with information to verify data at compile time.
+Common ways to describe data involve names, types, and comments. Both names and comments communicate primarily to the programmer. Types also communicate to the programmer, but types additionally provide compilers with information to verify data at compile time.
 
-The `clojure.spec` library offers the safety of types while retaining the flexibility of a dynamic language. `clojure.spec` can mimic type-checking, but specs go further by employing predicates to describe data within a single type (e.g., a spec can specify not just that a value must be a string, but that the string must be of a certain length, or contain a particular sequence of characters). And unlike types, specs can be applied to primitives, collections, and functions at the programmer’s discretion.
+The `clojure.spec` library offers the safety of types while retaining the flexibility of a dynamic language. `clojure.spec` can mimic type-checking, but specs can go further by employing predicates to describe data within a single type (e.g., a spec can specify not just that a value must be of type string, but that the string must be of a certain length, or contain a particular sequence of characters). And unlike types, specs are on demand; specs can be applied to primitives, collections, and functions at the programmer’s discretion.
 
-The power of `clojure.spec` derives from the composition of predicate functions. A ##predicate## is a function that produces a boolean. In Clojure, predicates that are not defined in-line should end with a question mark. Example predicates from the core clojure library include `even?` and `string?`, but you can create custom predicates as well, including sets and predicates that employ regular expressions.
+The power of `clojure.spec` derives from the composition of *predicate* functions: functions that produces a boolean. In Clojure, predicates, unless defined in-line, end with a question mark. Example predicates from the core clojure library include `even?` and `string?`, but you can create custom predicates as well, including predicates that employ regular expressions and sets.
 
-## Example specs
+## Example spec
 Say we want to write a function that requires integers greater than 9000. 
 
 ```clojure
 (defn yell 
-"Yell takes an integer over 9000 and returns a loud string."
- [n]
- (str n " is over 9000!"))
+  "Yell takes an integer over 9000 and returns a loud string."
+  [n]
+  (str n " is over 9000!"))
 
 (yell 77777) ;=> "77777 is over 9000!"
 ```
 
-We can specify this function's requirement with a spec, which will validate the data every time that function is called.
+We can specify this function's requirement with a spec, which can validate the data when the function is called.
 
 First we require the `clojure.spec` library, then define a spec for an integer over 9000.
 
@@ -49,6 +51,7 @@ We can now validate data according to that spec with `clojure.spec/valid?`.
 ```
 
 `clojure.spec/valid?` can also coerce predicates into specs.
+
 ```clojure
 (s/valid? even? 10) ;=> true
 (s/valid? string? "wizard") ;=> true
@@ -58,14 +61,14 @@ Now to spec the function:
 
 ```clojure
 (s/fdef yell :args ::over-9000
-             :ret string?)
+             :ret  string?)
 ```
 
-Here the `clojure.spec/fdef` function specifies that for the `yell` function, the argument must conform to the `::over-9000` spec, and the return value must be a string.
+Here the `clojure.spec/fdef` function specifies that for the `yell` function, the argument (`:args`) must conform to the `::over-9000` spec, and the return value (`:ret`) must be a string.
 
-The spec will now appear in the functions documentation.
+The spec will now appear in the function's documentation.
 
-```clojure
+```
 (doc yell) ;=>
 yell
 ([n])
@@ -75,49 +78,59 @@ Spec
   ret: string?
 ```
 
-Notice that the documentation automatically unpacks the predicates stored in the `::over-9000` spec.
+Notice that the documentation conveniently unpacks the predicates stored in the `::over-9000` spec.
 
-# Runtime validation
-You can use specs to verify input at runtime using `defn`'s `:pre` and `:post` condition support, and `clojure.spec/valid?`.
+## Use Cases for `clojure.spec`
 
+### Development
+
+- Reasoning about your code.
+Defining expected inputs and outputs of functions encourages programmers to think through edge cases and program design, making code more robust.
+
+- Generating test data
+Specs can generate random data that fit the spec. You can also `s/excercise` specs to see randomly generated data conforming to the spec in the REPL as you refine the spec.
+
+### Production
+- Runtime validation
+Validating data during runtime can be useful for data sent over the wire and at other I/O boundaries. *WARNING* Note that there is a performance penalty for runtime validation, so only validate data at runtime when data correctness is paramount and the correctness of the data is uncertain.
+
+Example: you can use specs to verify input at runtime using `defn`'s `:pre` and `:post` condition support paired with the `clojure.spec/valid?` function.
+
+```clojure
 (defn yell
   "yell takes a number over 9000 and returns a loud string"
   [n]
   {:pre [s/valid? ::over-9000]
    :post [s/valid? string?]
   (str n " is over 9000!"))
+```
 
+## Advantages of `clojure.spec`
 
-We can now use these specs to generate data for testing.
-
-If you spec a function for validation, you can reuse to generate random data that conforms to that spec. You can also generate sample data as you program to make sure the spec covers the expected data set.
-
-
-## Use Cases
-### Development
-#### Reasoning about your code.
-Defining expected inputs and outputs of functions helps think through edge cases, making code more robust.
-#### Generate test data
-Specs can generate random data that fit the spec.
-testing that conforms to the specification.
-
-### Production
-- Data validation at runtime. Especially useful for data sent over the wire. 
-##WARNING## Note that there is a performance penalty for runtime validation, so only validate data at runtime when data correctness is paramount and the incoming data may not be accurate.
-
-
-## Advantages
 ### Types on demand
 Unlike types, which must be applied everywhere, specs can be applied only as needed.
-### Flexibility
-Let's say requirements change and you need to add a key to a map. In a type system, you would have to change a class, or create a new class. With specs, adding a key to a map would have no effect on existing specs. You can then choose which functions interact with that new key, and add additional specs to relevant functions at your discretion.
+
+### Flexible typing
+Let's say requirements change and you need to add a key to a map. In a type system, you would have to change a class, or create a new class. With specs, adding a key to a map would have no effect on existing specs. You can then choose which functions interact with that new key, and add additional specs to relevant functions at your discretion. Otherwise, the new key will flow through functions without issue.
+
 ### Specs are documentation
-Readable by both humans and compilers.
+This documentation is readable by both humans and compilers. This process can
+
 ### Specs don't interfere with existing code
-You can group specs with code, or keep them in a separate namespace.
+You can group specs with code, or keep them in a separate namespace. They can be toggled on or off.
 
 ## Tradeoffs
+
 ### Runtime performance
 Like types, specs are most useful during development. But the use of specs during runtime should be strategic, as they do incur 
+
 ### Development time
 Like types, specs require more effort to code. But also like types, time spent specifying data may save time in the long run, both by encouraging programmers to reason more about the code, getting more granular feedback and error reporting, and facilitating automated testing.
+
+### Enforcing types requires discipline and reduces cognitive load
+One can argue that static types enforces data description, and programmers do not need to think about which data they should spec.
+
+
+## Learn more
+[About spec](https://clojure.org/about/spec)
+[The spec guide](https://clojure.org/guides/spec)
