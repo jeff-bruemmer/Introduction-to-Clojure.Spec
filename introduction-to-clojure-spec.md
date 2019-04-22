@@ -107,30 +107,32 @@ Example: you can use specs to verify input at runtime using `defn`'s `:pre` and 
 
 ## Advantages of `clojure.spec`
 
-### Types on demand
+- Types on demand
 Unlike types, which must be applied everywhere, specs can be applied only as needed.
 
-### Flexible typing
+- Flexible typing
 Let's say requirements change and you need to add a key to a map. In a type system, you would have to change a class, or create a new class. With specs, adding a key to a map would have no effect on existing specs. You can then choose which functions interact with that new key, and add additional specs to relevant functions at your discretion. Otherwise, the new key will flow through functions without issue.
 
-### Specs are documentation
+- Specs are documentation
 This documentation is readable by both humans and compilers. This process can
 
-### Specs don't interfere with existing code
+- Specs don't interfere with existing code
 You can group specs with code, or keep them in a separate namespace. They can be toggled on or off.
 
 ## Tradeoffs
 
-### Runtime performance
+- Runtime performance
 Like types, specs are most useful during development. But the use of specs during runtime should be strategic, as they do incur 
 
-### Development time
+- Development time
 Like types, specs require more effort to code. But also like types, time spent specifying data may save time in the long run, both by encouraging programmers to reason more about the code, getting more granular feedback and error reporting, and facilitating automated testing.
 
-### Enforcing types requires discipline and reduces cognitive load
+- Enforcing types requires discipline and reduces cognitive load
 One can argue that static types enforces data description, and programmers do not need to think about which data they should spec.
 
 
 ## Learn more
+
 [About spec](https://clojure.org/about/spec)
+
 [The spec guide](https://clojure.org/guides/spec)
