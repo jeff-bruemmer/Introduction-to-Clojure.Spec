@@ -100,7 +100,7 @@ Defining expected inputs and outputs of functions beyond mere type encourages pr
 
 ### Data generation for REPL development and testing
 
-We can use clojure's test.check library to generate random data that fits any spec. We can also use `clojure.spec/excercise` to generate random data that  conforms to the spec as you develop the specification.
+We can use clojure's test.check library to generate random data that fits any spec. We can also use `clojure.spec/exercise` to generate random data that conforms to the spec as you develop the specification.
 
 ### Optional runtime validation
 
