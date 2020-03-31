@@ -15,9 +15,9 @@ Clojure is a dynamic programming language. Some programmers prefer languages wit
 This brief introduction can only give a sample of the `clojure.spec` library, but the discussion should be enough to give you an idea of the library's functionality, and to encourage you to learn more.
 
 ## Specs
-Specs are predicates used to describe sets of values.
+Specs (short for specifications) are predicates used to describe sets of values.
 
-We can use any predicate function as a spec (i.e., a function that takes a single input and produces a boolean). Example predicates from the core clojure library include `even?` and `string?`, but we can create custom predicates as well, including predicates that employ regular expressions and sets. The power of the `clojure.spec` library derives from our ability to compose these predicate functions to specify data with precision beyond the reach of types.
+We can use any predicate function as a spec (i.e. a pure function that takes a single input and produces a boolean). Example predicates from the core Clojure library include `even?` and `string?`, but we can create custom predicates as well, including predicates that employ regular expressions and sets. The power of the `clojure.spec` library derives from our ability to compose these predicate functions to specify data with precision beyond the reach of types.
 
 For example, predicate functions allow us to describe data _within a single type_. A spec can specify not just that a value must be of type string, for instance, but that the string must be of a certain length, or contain a particular sequence of characters.
 
@@ -132,7 +132,7 @@ Specs can be used to monitor values passed to functions during development, and 
 
 You can group specs with code, or keep them in a separate namespace. They can be toggled on or off as needed.
 
-## Trade-offs of clojure.spec
+## Trade-offs of `clojure.spec`
 
 ### Performance hit at runtime
 
@@ -145,7 +145,6 @@ One can argue that static types force us to think about data description every t
 ### Cognitive overhead and development time
 
 Programmers need to make decisions about what parts of the code to spec, and which to leave unspecified. And like types, specs require more effort to code. But also like types, time spent specifying data may save time in the long run, by encouraging programmers to reason more about the code, offering more granular feedback, and facilitating automated testing.
-
 
 ## Learn more
 
