@@ -17,7 +17,7 @@ This brief introduction can only give a sample of the `clojure.spec` library, bu
 ## Specs
 Specs (short for specifications) are predicates used to describe sets of values.
 
-We can use any predicate function as a spec (i.e. a pure function that takes a single input and produces a boolean). Example predicates from the core Clojure library include `even?` and `string?`, but we can create custom predicates as well, including predicates that employ regular expressions and sets. The power of the `clojure.spec` library derives from our ability to compose these predicate functions to specify data with precision beyond the reach of types.
+We can use any predicate function (i.e. a pure function that takes a single input and produces a boolean) as a spec. Example predicates from the core Clojure library include `even?` and `string?`, but we can create custom predicates as well, including predicates that employ regular expressions and sets. The power of the `clojure.spec` library derives from our ability to compose these predicate functions to specify data with precision beyond the reach of types.
 
 For example, predicate functions allow us to describe data _within a single type_. A spec can specify not just that a value must be of type string, for instance, but that the string must be of a certain length, or contain a particular sequence of characters.
 
