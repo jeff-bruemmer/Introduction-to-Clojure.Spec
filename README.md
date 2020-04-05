@@ -1,4 +1,4 @@
-# A Brief Introduction to `clojure.spec`
+# A brief introduction to `clojure.spec`
 
 Clojure is a dynamically typed programming language. Some programmers prefer languages with static typing. `clojure.spec` is a powerful library that adds static-type-like functionality, and it overdelivers.
 
