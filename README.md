@@ -94,20 +94,9 @@ Notice that, like the error message from the `s/explain` example, the documentat
 
 ## Advantages of `clojure.spec`
 
-### Encourages reasoning about our code
-
-Defining expected inputs and outputs of functions beyond mere type encourages programmers to think through edge cases and program design, making code more robust.
-
-### Data generation for REPL development and testing
-
-We can use clojure's test.check library to generate random data that fits any spec. We can also use `clojure.spec/exercise` to generate random data that conforms to the spec as you develop the specification.
-
-### Optional runtime validation
-
-Validating data during runtime can be useful for data sent over the wire and at other I/O boundaries. 
-
-Example: you can use specs to verify input at runtime using `defn`'s `:pre` and `:post` keys paired with the `clojure.spec/valid?` function.
-
+- **Encourages reasoning about our code.** Defining expected inputs and outputs of functions beyond mere type encourages programmers to think through edge cases and program design, making code more robust.
+- **Data generation for REPL development and testing.** We can use clojure's test.check library to generate random data that fits any spec. We can also use `clojure.spec/exercise` to generate random data that conforms to the spec as you develop the specification.
+- **Optional runtime validation.** Validating data during runtime can be useful for data sent over the wire and at other I/O boundaries. For example, you can use specs to verify input at runtime using `defn`'s `:pre` and `:post` keys paired with the `clojure.spec/valid?` function.
 ```clojure
 (defn yell
   "yell takes a number over 9000 and returns a loud string"
@@ -116,35 +105,15 @@ Example: you can use specs to verify input at runtime using `defn`'s `:pre` and 
    :post [s/valid? string?]}
   (str n " is over 9000!"))
 ```
-
-### Surgical typing
-
-Let's say requirements change and we need to add a key to a map. In a type system, we would have to change a class, or create a new class. With specs, adding a key to a map would have no effect on existing specs. We can then determine which functions interact with that new key, and add additional specs to relevant functions at our discretion. If we do nothing, the new key will still flow through existing functions without issue.
-
-### Coded documentation
-
-Specs double as documentation readable by both humans and compilers.
-
-### Instrumentation and improved error reporting
-Specs can be used to monitor values passed to functions during development, and to return well-defined error messages on failure.
-
-### Specs don't interfere with existing code
-
-You can group specs with code, or keep them in a separate namespace. They can be toggled on or off as needed.
+- **Surgical typing.** Let's say requirements change and we need to add a key to a map. In a type system, we would have to change a class, or create a new class. With specs, adding a key to a map would have no effect on existing specs. We can then determine which functions interact with that new key, and add additional specs to relevant functions at our discretion. If we do nothing, the new key will still flow through existing functions without issue.
+- **Coded documentation.** Specs double as documentation readable by both humans and compilers.
+- **Instrumentation and improved error reporting.**Specs can be used to monitor values passed to functions during development, and to return well-defined error messages on failure.
+- **Specs don't interfere with existing code.** You can group specs with code, or keep them in a separate namespace. They can be toggled on or off as needed.
 
 ## Trade-offs of `clojure.spec`
-
-### Performance hit at runtime
-
-Like types, specs are most useful during development for both iterating on  feedback and considering code design. The use of specs during runtime should be strategic, as validation requires extra computation, but runtime specs can still be useful at application edges where data correctness is paramount.
-
-### No enforcement of types
-
-One can argue that static types force us to think about data description every time. Because specs are discretionary, no hard-coded enforcement mechanism exists.
-
-### Cognitive overhead and development time
-
-Programmers need to make decisions about what parts of the code to spec, and which to leave unspecified. And like types, specs require more effort to code. But also like types, time spent specifying data may save time in the long run, by encouraging programmers to reason more about the code, offering more granular feedback, and facilitating automated testing.
+- **Performance hit at runtime.** Like types, specs are most useful during development for both iterating on  feedback and considering code design. The use of specs during runtime should be strategic, as validation requires extra computation, but runtime specs can still be useful at application edges where data correctness is paramount.
+- **No enforcement of types.** One can argue that static types force us to think about data description every time. Because specs are discretionary, no hard-coded enforcement mechanism exists.
+- **Cognitive overhead and development time.** Programmers need to make decisions about which parts of the code to spec, and which to leave unspecified. And like types, specs require more effort to code. But also like types, time spent specifying data may save time in the long run, by encouraging programmers to reason more about the code, offering more granular feedback, and facilitating automated testing.
 
 ## Learn more
 
